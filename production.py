@@ -92,7 +92,12 @@ filename = sys.argv[1]
 
 raw = rawpy.imread(filename)
 resized = np.expand_dims(pack_raw(raw), axis=0) * 300
-input_full = np.minimum(resized, 1.0)
+H = resized.shape[1]
+W = resized.shape[2]
+xx = np.random.randint(0, W - 1400)
+yy = np.random.randint(0, H - 1400)
+input_crop = resized[:, yy:yy + 1400, xx:xx + 1400, :]
+input_full = np.minimum(input_crop, 1.0)
 
 # Restore trained model
 saver = tf.train.Saver()
