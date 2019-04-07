@@ -108,4 +108,5 @@ output = sess.run([output_image], feed_dict={ input_image: input_full})
 output = np.minimum(np.maximum(output, 0), 1)
 output = output[0,0,:,:,:]
 render = output*255
-imageio.imwrite('files/result.png', render)
+img = render.astype(np.uint8)
+imageio.imwrite('files/result.png', img)
