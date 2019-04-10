@@ -88,20 +88,21 @@ def pack_raw(raw):
     return out
 
 # CLI
+patch_size = 1400
 filename = sys.argv[1]
-
+savename = sys.argv[2]
 raw = rawpy.imread(filename)
 resized = np.expand_dims(pack_raw(raw), axis=0) * 300
 H = resized.shape[1]
 W = resized.shape[2]
-xx = np.random.randint(0, W - 1400)
-yy = np.random.randint(0, H - 1400)
-input_crop = resized[:, yy:yy + 1400, xx:xx + 1400, :]
+xx = np.random.randint(0, W - patch_size)
+yy = np.random.randint(0, H - patch_size)
+input_crop = resized[:, yy:yy + patch_size, xx:xx + patch_size, :]
 input_full = np.minimum(input_crop, 1.0)
 
 # Restore trained model
 saver = tf.train.Saver()
-saver.restore(sess, "files/my-test-model.ckpt")
+saver.restore(sess, "models/my-test-model4.ckpt")
 
 # Run forward pass to get output
 output = sess.run([output_image], feed_dict={ input_image: input_full})
@@ -109,4 +110,4 @@ output = np.minimum(np.maximum(output, 0), 1)
 output = output[0,0,:,:,:]
 render = output*255
 img = render.astype(np.uint8)
-imageio.imwrite('files/result.png', img)
+imageio.imwrite('images/'+ savename + '.png', img)
