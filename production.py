@@ -7,7 +7,7 @@ import os
 import gc
 import imageio
 import sys
-
+from converter import bayer_to_rgba
 tf.reset_default_graph()
 
 sess = tf.Session()
@@ -74,8 +74,8 @@ sess.run(tf.global_variables_initializer())
 def pack_raw(raw):
     # pack Bayer image to 4 channels
     im = raw.raw_image_visible.astype(np.float32)
-    im = np.maximum(im - 512, 0) / (16383 - 512)  # subtract the black level
-
+    im = np.maximum(im - 512, 0) / (63 - 512)   # subtract the black level
+    print(im)
     im = np.expand_dims(im, axis=2)
     img_shape = im.shape
     H = img_shape[0]
@@ -91,8 +91,8 @@ def pack_raw(raw):
 patch_size = 1400
 filename = sys.argv[1]
 savename = sys.argv[2]
-raw = rawpy.imread(filename)
-resized = np.expand_dims(pack_raw(raw), axis=0) * 300
+resized = bayer_to_rgba(filename)
+print(resized)
 H = resized.shape[1]
 W = resized.shape[2]
 xx = np.random.randint(0, W - patch_size)
