@@ -1,0 +1,10 @@
+No. of unique images in train set - 50
+Error on test set mesured by L1 Loss => Error = 1/n*(sum(abs(output - actual)))
+
+100 - 0.1443296679109335
+200 - 0.03749073404818773
+300 - 0.03562330920249224
+400 - 0.033144050501286985
+600 - 0.03228630008175969
+600 + 400 on new images- 0.035152323208749295
+800 - 
