@@ -8,5 +8,5 @@ Steps to run
 >python3 -m pip install numpy tensorflow rawpy imageio
 3. Download model and test images zip file and unzip them into a new folder called files ( image should be more than 1400x1400 pixels)
 4. Run production script
->python3 production.py [image path]
-5. Resulting output image will appear in files folder as result.jpg
+>python3 production.py [image path] [saveas]
+5. Resulting output image will appear in files folder as saveas.png
