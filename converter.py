@@ -8,8 +8,10 @@ OETF = colour.OETFS['sRGB']
 
 def bayer_to_rgba(filename):
     im = rawpy.imread(filename)
-    rgb = im.postprocess(use_camera_wb=True, half_size=False, no_auto_bright=True, output_bps=16)
-    rgb = rgb / np.max(rgb)
+    image = im.raw_image_visible.astype(np.float32)
+    print('bayer',image)
+    rgb = demosaicing_CFA_Bayer_Malvar2004(image)
+    print('rgb', rgb)
     r, g, b = cv2.split(rgb)
     alpha = np.ones(r.shape, dtype=r.dtype)
     rgba = cv2.merge((r, g, b, alpha))
