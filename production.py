@@ -71,10 +71,10 @@ output_image = tf.depth_to_space(c10,2)
 sess.run(tf.global_variables_initializer())
 
 # Resizer
-def pack_raw(raw):
+def pack_raw(raw, black_level):
     # pack Bayer image to 4 channels
     im = raw.raw_image_visible.astype(np.float32)
-    im = np.maximum(im - 512, 0) / (16383 - 512)  # subtract the black level
+    im = np.maximum(im - black_level, 0) / (16383 - black_level)  # subtract the black level
 
     im = np.expand_dims(im, axis=2)
     img_shape = im.shape
@@ -91,8 +91,9 @@ def pack_raw(raw):
 patch_size = 1400
 filename = sys.argv[1]
 savename = sys.argv[2]
+black_level = int(sys.argv[3])
 raw = rawpy.imread(filename)
-resized = np.expand_dims(pack_raw(raw), axis=0) * 300
+resized = np.expand_dims(pack_raw(raw, black_level), axis=0) * 300
 H = resized.shape[1]
 W = resized.shape[2]
 xx = np.random.randint(0, W - patch_size)
