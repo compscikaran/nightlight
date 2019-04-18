@@ -3,10 +3,9 @@ import tensorflow as tf
 import tensorflow.contrib.slim as sl
 import rawpy
 import glob
-import os
-import gc
 import imageio
 import sys
+from utilities import pack_raw, dng_blacklevel
 
 tf.reset_default_graph()
 
@@ -70,36 +69,20 @@ output_image = tf.depth_to_space(c10,2)
 
 sess.run(tf.global_variables_initializer())
 
-# Resizer
-def pack_raw(raw, black_level):
-    # pack Bayer image to 4 channels
-    im = raw.raw_image_visible.astype(np.float32)
-    im = np.maximum(im - black_level, 0) / (16383 - black_level)  # subtract the black level
-
-    im = np.expand_dims(im, axis=2)
-    img_shape = im.shape
-    H = img_shape[0]
-    W = img_shape[1]
-
-    out = np.concatenate((im[0:H:2, 0:W:2, :],
-                          im[0:H:2, 1:W:2, :],
-                          im[1:H:2, 1:W:2, :],
-                          im[1:H:2, 0:W:2, :]), axis=2)
-    return out
-
 # CLI
-patch_size = 1400
 filename = sys.argv[1]
 savename = sys.argv[2]
-black_level = int(sys.argv[3])
+
+if filename.endswith('.dng'):
+    black_level = dng_blacklevel(filename)
+elif filename.endswith('.ARW'):
+    black_level = 512
+else:
+    raise Exception('File format not supported')
+
 raw = rawpy.imread(filename)
 resized = np.expand_dims(pack_raw(raw, black_level), axis=0) * 300
-H = resized.shape[1]
-W = resized.shape[2]
-xx = np.random.randint(0, W - patch_size)
-yy = np.random.randint(0, H - patch_size)
-input_crop = resized[:, yy:yy + patch_size, xx:xx + patch_size, :]
-input_full = np.minimum(input_crop, 1.0)
+input_full = np.minimum(resized, 1.0)
 
 # Restore trained model
 saver = tf.train.Saver()
