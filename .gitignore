@@ -2,3 +2,4 @@ images/
 models/
 .ipynb_checkpoints/
 __pycache__
+.vscode
