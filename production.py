@@ -4,8 +4,8 @@ import rawpy
 import glob
 import imageio
 import sys
-from core.utilities import pack_raw, calculate_black_level
-from core.cnn import network
+from utilities import pack_raw, calculate_black_level
+from cnn import network
 
 # Initialize Tensorflow 
 tf.reset_default_graph()
@@ -28,7 +28,7 @@ input_full = np.minimum(resized, 1.0)
 
 # Restore trained model
 saver = tf.train.Saver()
-saver.restore(sess, "models/my-test-model7.ckpt")
+saver.restore(sess, "models/my-test-model8l.ckpt")
 
 # Run forward pass to get output
 output = sess.run([output_image], feed_dict={ input_image: input_full})

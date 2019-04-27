@@ -10,3 +10,4 @@ Error on test set mesured by L1 Loss => Error = 1/n*(sum(abs(output - actual)))
 700 (decreasing learning rate from 0.0001 to 0.00001) - 0.0335419842787087
 700 - 0.031514776032418014
 700 + 50 with l1 regularization - 0.07999888822436332
+800 ( with weight regularization) - 0.03180250000208616
