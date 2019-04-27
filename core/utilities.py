@@ -29,3 +29,9 @@ def calculate_black_level(filename):
     else:
         raise Exception('File format not supported')
     return black_level
+
+# Render out raw file to .png
+def render_raw(image, savename):
+    im = rawpy.imread(image)
+    rgb = im.postprocess(use_camera_wb=True, half_size=False, no_auto_bright=True, output_bps=16)
+    imageio.imwrite('images/' + savename + '.png', rgb)
