@@ -14,3 +14,4 @@ Error on test set mesured by L1 Loss => Error = 1/n*(sum(abs(output - actual)))
 800 (without any regularization) - 0.0545675172843039
 800 (with weight and bias regularization l1 strength 0.05) - 0.03027642400935292
 900 (with weight and bias regularization l1 strength 0.05) - 0.028772954419255255
+1000 (with weight and bias regularization l1 strength 0.05) - 0.030593255497515202
