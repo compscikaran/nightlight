@@ -28,7 +28,7 @@ input_full = np.minimum(resized, 1.0)
 
 # Restore trained model
 saver = tf.train.Saver()
-saver.restore(sess, "models/my-test-model8l1.ckpt")
+saver.restore(sess, "models/my-test-model9l1.ckpt")
 
 # Run forward pass to get output
 output = sess.run([output_image], feed_dict={ input_image: input_full})
